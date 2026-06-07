@@ -1,0 +1,17 @@
+# CODEOWNERS
+# Each module is owned by the corresponding team.
+# In the exercise, participants are the code owners of their assigned module.
+# In a real team, this would prevent PRs from merging without the module owner's approval.
+
+# Global fallback — repo admin reviews everything not matched below
+* @pulseboard-admin
+
+# Module owners
+/api/src/users-auth/ @pulseboard-users-auth-team
+/api/src/pulses/ @pulseboard-pulses-team
+/api/src/insights/ @pulseboard-insights-team
+/api/src/notifications/ @pulseboard-notifications-team
+
+# Infrastructure — only the admin team can merge CI/CD changes
+/.github/workflows/ @pulseboard-admin
+/docker-compose*.yml @pulseboard-admin

@@ -1,0 +1,37 @@
+{
+  "__comment": "Claude-only: permissions restrict what Bash commands Claude can run in this repo. PostToolUse hook runs lint after every file write to catch problems immediately. No Copilot equivalent — this is a Claude Code-specific primitive. See https://docs.anthropic.com/claude/docs/claude-code-settings for reference.",
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm test)",
+      "Bash(npm run migration:run)",
+      "Bash(gh issue*)",
+      "Bash(gh pr*)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git checkout*)",
+      "Bash(git push*)",
+      "Bash(docker-compose*)"
+    ],
+    "deny": [
+      "Bash(rm -rf*)",
+      "Bash(DROP TABLE*)",
+      "Bash(git push --force*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd api && npm run lint --silent 2>&1 | head -20 || true"
+          }
+        ]
+      }
+    ]
+  }
+}

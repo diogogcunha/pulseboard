@@ -1,0 +1,88 @@
+# WHY THIS WORKFLOW EXISTS: Posts a structured automated review on every PR.
+# Shows participants what automated code review looks like at scale.
+# Note: this is a simplified version — a real implementation uses a proper
+# static analysis tool. This one checks commit format and PR size.
+
+name: pr-review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  automated-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR title format
+        id: title-check
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          if echo "$TITLE" | grep -qE '^(feat|fix|chore|docs|test|refactor)\([a-z-]+\): .+'; then
+            echo "title_ok=true" >> $GITHUB_OUTPUT
+          else
+            echo "title_ok=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check PR size
+        id: size-check
+        run: |
+          LINES=$(git diff --shortstat origin/main...HEAD | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo 0)
+          if [ "$LINES" -gt 400 ]; then
+            echo "size_warning=true" >> $GITHUB_OUTPUT
+            echo "lines=$LINES" >> $GITHUB_OUTPUT
+          else
+            echo "size_warning=false" >> $GITHUB_OUTPUT
+            echo "lines=$LINES" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const titleOk = '${{ steps.title-check.outputs.title_ok }}' === 'true';
+            const sizeWarning = '${{ steps.size-check.outputs.size_warning }}' === 'true';
+            const lines = '${{ steps.size-check.outputs.lines }}';
+
+            const checks = [];
+            checks.push(titleOk
+              ? '✅ PR title follows conventional commit format'
+              : '❌ PR title must follow `type(scope): description` format (e.g. `feat(users-auth): add login endpoint`)');
+
+            if (sizeWarning) {
+              checks.push(`⚠️ Large PR: ${lines} lines added. Consider breaking this into smaller PRs for easier review.`);
+            } else {
+              checks.push(`✅ PR size: ${lines} lines added`);
+            }
+
+            const body = `## Automated Review\n\n${checks.join('\n')}\n\n---\n*Quality gate (lint, tests, coverage) runs separately in the \`quality\` check.*`;
+
+            // Find existing comment to update
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.data.find(c => c.body.startsWith('## Automated Review'));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }

@@ -1,0 +1,35 @@
+name: Bug Report
+description: Report a bug in PulseBoard
+title: "[bug] "
+labels: ["type:bug"]
+body:
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - users-auth
+        - pulses
+        - insights
+        - notifications
+        - common
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What was expected?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true

@@ -1,6 +1,6 @@
 # PulseBoard — Instrumented Codebase Exercise
 
-> **Week 4 exercise repo** for the AI-First Development Program.
+> **Agentic SDLC exercise repo** for the AI-First Development Program.
 > This repo is pre-wired for both GitHub Copilot (VS Code) and Claude Code (CLI).
 
 ---
@@ -12,7 +12,7 @@ The database is SQLite (a local file, created automatically) and the token store
 
 ```bash
 # 1. Clone this repo
-git clone <repo-url>
+git clone https://github.com/diogogcunha/pulseboard.git
 cd pulseboard
 
 # 2. Copy environment files (defaults are ready to go — no editing needed)
@@ -31,9 +31,7 @@ cd web && npm install && npm run dev
 #   Health:   http://localhost:3001/health
 ```
 
-> **First run** installs dependencies and creates the SQLite schema automatically.
-> Restarts are fast. The DB file (`api/pulseboard.dev.sqlite`) is git-ignored — delete
-> it any time to reset to a clean database.
+> **First run** installs dependencies and creates the SQLite schema automatically. Restarts are fast. The DB file (`api/pulseboard.dev.sqlite`) is git-ignored — delete it any time to reset to a clean database.
 
 ### Optional: full-infra mode with Docker
 
@@ -93,19 +91,20 @@ This repo is pre-wired with AI agent primitives for two harnesses:
 ## What's Pre-Built vs What You Build
 
 ### Pre-Built (skeleton)
-- ✅ Complete infrastructure (Docker, CI, agent primitives)
+- ✅ Zero-setup run: SQLite + in-memory store (Docker/Postgres/Redis optional), plus CI and agent primitives
 - ✅ Module structure with all files present (mostly stubbed)
-- ✅ Entity definitions and database migrations (schema is complete)
-- ✅ Common utilities (logger, config validation, exception filter, health check)
+- ✅ Entity definitions and schema (SQLite auto-builds it; Postgres migrations included)
+- ✅ Common utilities (logger, config validation, `KeyValueStore`, exception filter, health check)
 - ✅ Landing page HTML/CSS structure
 
 ### You Build (the 20 GitHub Issues)
-- 🔨 Authentication and JWT logic (Issues #1–4)
-- 🔨 Pulse creation and magic link flow (Issues #5–7)
-- 🔨 Results aggregation and dashboards (Issues #8–9)
-- 🔨 Email notifications and preferences (Issues #10–12)
+- 🔨 Auth API, user profiles, DB schema, and login UI (Issues #1–4)
+- 🔨 Pulse creation and magic-link response flow (Issues #5–7)
+- 🔨 Results aggregation and dashboard (Issues #8–9)
+- 🔨 Email notifications and preferences (Issues #10–11)
+- 🔨 Pulse templates library (Issue #12)
 - 🔨 SEO/AEO optimized landing page (Issue #13)
-- 🔨 Observability and CI/CD (Issues #14–19)
+- 🔨 Logging, tracing, security headers, and CI/CD (Issues #14–19)
 - 🔨 GDPR account deletion (Issue #20)
 
 ---
@@ -129,4 +128,3 @@ See `CONTRIBUTING.md` for the full guide. Summary:
 - Branches: `feat/[module]/[issue-number]-[slug]` (created automatically on issue assign)
 - Commits: `type(scope): description` — e.g. `feat(users-auth): implement JWT refresh rotation`
 - PRs: `Closes #[issue-number]` in the description to auto-close on merge
-# pulseboard
