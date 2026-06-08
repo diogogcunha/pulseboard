@@ -39,10 +39,10 @@ export const configSchema = Joi.object({
 
   // Email
   EMAIL_PROVIDER: Joi.string().valid('smtp', 'mock').default('mock'),
-  SMTP_HOST: Joi.string().optional(),
+  SMTP_HOST: Joi.string().allow('').optional(),
   SMTP_PORT: Joi.number().optional(),
-  SMTP_USER: Joi.string().optional(),
-  SMTP_PASS: Joi.string().optional(),
+  SMTP_USER: Joi.string().allow('').optional(),
+  SMTP_PASS: Joi.string().allow('').optional(),
   EMAIL_FROM: Joi.string().email().required(),
 
   // CORS
@@ -52,5 +52,5 @@ export const configSchema = Joi.object({
   LOG_LEVEL: Joi.string().valid('debug', 'info', 'warn', 'error').default('info'),
 
   // OpenTelemetry (optional)
-  OTEL_EXPORTER_OTLP_ENDPOINT: Joi.string().uri().optional(),
+  OTEL_EXPORTER_OTLP_ENDPOINT: Joi.string().allow('').optional(),
 });
