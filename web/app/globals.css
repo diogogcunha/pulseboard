@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* WHY FOCUS STYLES HERE: All interactive elements need visible focus indicators
+   (AR-01 requirement). These base styles ensure focus is visible even when
+   Tailwind's default browser styles are reset. */
+@layer base {
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-600;
+  }
+}
