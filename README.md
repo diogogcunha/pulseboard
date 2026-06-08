@@ -1,6 +1,6 @@
 # PulseBoard — Instrumented Codebase Exercise
 
-> **Agentic SDLC exercise repo** for the AI-First Development Program.
+> **Agentic SDLC exercise** for the AI-First Development Program.
 > This repo is pre-wired for both GitHub Copilot (VS Code) and Claude Code (CLI).
 
 ---
@@ -109,7 +109,7 @@ This repo is pre-wired with AI agent primitives for two harnesses:
 
 ---
 
-## Week 4 Exercise Goal
+## Exercise Goal
 
 By the end of this session:
 1. Implement at least one Sprint 1 issue using the agent primitives
