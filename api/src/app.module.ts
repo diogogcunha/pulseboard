@@ -36,11 +36,11 @@ import { NotificationsModule } from './notifications/notifications.module';
         if (config.get('DB_DRIVER') === 'postgres') {
           return {
             type: 'postgres' as const,
-            host: config.get('DB_HOST'),
+            host: config.get<string>('DB_HOST'),
             port: config.get<number>('DB_PORT'),
-            username: config.get('DB_USER'),
-            password: config.get('DB_PASS'),
-            database: config.get('DB_NAME'),
+            username: config.get<string>('DB_USER'),
+            password: config.get<string>('DB_PASS'),
+            database: config.get<string>('DB_NAME'),
             entities,
             migrations: [__dirname + '/../migrations/**{.ts,.js}'],
             synchronize: false, // NEVER true in production — use migrations
